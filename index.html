@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Level Editor</title>
+		<link rel="stylesheet" href="./styles/main.css" type="text/css" media="screen" title="main" charset="utf-8">
+		<script src="./scripts/main.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<header id="header">
+			<span tid="001">Level Editor</span>
+		</header>
+
+		<div id="main">
+			<div id="view_w">
+				<div id="view"></div>
+				<div id="ruler"></div>
+			</div><!--
+
+			--><div id="tools">
+				<h1 tid="003">Level</h1>
+				<div id="t_lvl">
+					<div>
+						<label for="tl_h" tid="006">Height</label><input id="tl_h" type="number" />px
+					</div>
+					<div>
+						<label for="tl_w" tid="007">Width</label><input id="tl_w" type="number" />px
+					</div>
+					<div class="separator"></div>
+					<div>
+						<label for="tl_ruler_on" tid="008">Show ruler</label><input id="tl_ruler_on" type="checkbox" checked />
+					</div>
+					<div>
+						<label for="tl_ruler_h" tid="009">Ruler Height</label><input id="tl_ruler_h" type="number" />
+					</div>
+					<div>
+						<label for="tl_ruler_w" tid="010">Ruler Width</label><input id="tl_ruler_w" type="number" />
+					</div>
+					<div><button type="button" id="tl_ruler_btn" tid="011">Update</div>
+				</div>
+				<h1 tid="004">Objects</h1>
+				<div id="t_obj">
+				</div>
+				<h1 tid="005">Objects Properties</h1>
+				<div id="t_obj_p">
+				</div>
+			</div>
+		</div>
+
+		<footer id="footer">
+			<span tid="002">Made by </span>Grom ©
+		</footer>
+
+		<script type="text/javascript" src="./scripts/launch.js"></script>
+	</body>
+</html>

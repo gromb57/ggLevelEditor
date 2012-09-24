@@ -1,0 +1,105 @@
+@import "compass";
+
+*{
+	margin:0;
+	padding:0;
+}
+
+body{
+	background:lightgrey;
+}
+
+header, footer{
+	@include background-image(linear-gradient(lighten(orange, 20%), orange));
+	color:lightgrey;
+	text-shadow:1px 1px 1px black;
+	width:100%;
+}
+
+header{
+	@include border-top-radius();
+	text-align:center;
+}
+
+footer{
+	@include border-bottom-radius();
+	text-align:right;
+}
+
+table{
+	border-collapse:collapse;
+}
+
+#main{
+	width:100%;
+}
+
+#view_w, #tools{
+	display:inline-block;
+	height:100%;
+	outline:1px solid #333333;
+}
+
+#view_w{
+	background:white;
+	overflow:scroll;
+	width:80%;
+}
+
+#ruler{
+	float:left;
+	z-index:1;
+	.case{
+		outline:1px solid #aaaaaa;
+		&:hover{
+			background:#cccccc;
+			outline:1px solid #cccccc;
+		}
+	}
+}
+
+#view{
+	z-index:2;
+}
+
+#tools{
+	overflow-y:scroll;
+	vertical-align:top;
+	width:20%;
+	h1{
+		background:#c1cdc4;
+		color:#202221;
+		font-size:1.4em;
+		outline:1px solid #333333;
+		text-align:center;
+		width:100%;
+	}
+	div{
+		overflow:hidden;
+		text-overflow:ellipsis;
+		width:100%;
+	}
+	#t_obj{
+		height:250px;
+		overflow:scroll;
+		#t_obj_list{
+			width:100%;
+			td.td_ol_first{
+				height:50px;
+				width:50px;
+			}
+			.t_obj_ui{
+				height:50px;
+				width:50px;
+			}
+		}
+	}
+}
+
+.separator{
+	border-bottom:1px solid #333333;
+	@include box-shadow();
+	height:1px;
+	margin:.3em 0;
+	width:100%;
+}
