@@ -9,6 +9,10 @@ body{
 	background:lightgrey;
 }
 
+button{
+	padding:.5em 1em;
+}
+
 header, footer{
 	@include background-image(linear-gradient(lighten(orange, 20%), orange));
 	color:lightgrey;
@@ -28,6 +32,7 @@ footer{
 
 table{
 	border-collapse:collapse;
+	width:100%;
 }
 
 #main{
@@ -47,6 +52,7 @@ table{
 }
 
 #ruler{
+	display:none;
 	float:left;
 	z-index:1;
 	.case{
@@ -59,7 +65,11 @@ table{
 }
 
 #view{
+	position:relative;
 	z-index:2;
+	.t_obj_ui{
+		position:absolute;
+	}
 }
 
 #tools{
@@ -96,10 +106,10 @@ table{
 	}
 }
 
-.separator{
-	border-bottom:1px solid #333333;
-	@include box-shadow();
-	height:1px;
-	margin:.3em 0;
-	width:100%;
+.alignCenter{
+	text-align:center;
+}
+
+.c_space{
+	margin:.5em;
 }
