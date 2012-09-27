@@ -122,10 +122,7 @@ function GgLEMain(){
 			newElm.addEventListener("dragstart", self.obj.drag);
 			newElm.addEventListener("click", self.obj.getProperties);
 
-			if(e.dataTransfer.getData("isMoved")){
-			}else{
-				newElm.click();
-			}
+			newElm.click();
 		},
 		ruler:{
 			change:function(e){
@@ -178,9 +175,8 @@ function GgLEMain(){
 			e.dataTransfer.setData("new_id",e.target.id+obj_id++);
 		},
 		drag:function(e){
-			obj_id++;
 			e.dataTransfer.setData("id",e.target.id);
-			e.dataTransfer.setData("new_id",e.target.id+obj_id);
+			e.dataTransfer.setData("new_id",e.target.id);
 			e.dataTransfer.setData("isMoved", true);
 		},
 		getProperties:function(e){
@@ -189,6 +185,13 @@ function GgLEMain(){
 			document.getElementById("top_type").innerText=obj_list[e.currentTarget.getAttribute("olid")].type;
 			document.getElementById("top_x").value=e.currentTarget.offsetLeft;
 			document.getElementById("top_y").value=e.currentTarget.offsetTop;
+		},
+		getTypeId:function(typeStr){
+			for(var x in obj_list){
+				if(obj_list.hasOwnProperty(x)){
+					if(obj_list[x].type == typeStr) return x;
+				}
+			}
 		},
 		init:function(){
 			var html='', tr;
@@ -366,7 +369,7 @@ function GgLEMain(){
 				height:document.getElementById("tl_h").value,
 				width:document.getElementById("tl_w").value,
 				bg:{},
-				fb:{},
+				fg:{},
 				objects:{}
 			}, sceneStringified, html="";
 
@@ -422,30 +425,93 @@ function GgLEMain(){
 					}
 				}
 			});
-
-			/*
-			var dirReader = self.fileSystem.root.createReader();
-			dirReader.readEntries(function(entries){
-				if (!entries.length) {
-					filelist.innerHTML = 'Filesystem is empty.';
-				} else {
-					filelist.innerHTML = '';
-				}
-
-				var fragment = document.createDocumentFragment();
-				for (var i = 0, entry; entry = entries[i]; ++i) {
-					var img = entry.isDirectory ? '<img src="http://www.html5rocks.com/static/images/tutorials/icon-folder.gif">' :
-					'<img src="http://www.html5rocks.com/static/images/tutorials/icon-file.gif">';
-					var li = document.createElement('li');
-					li.innerHTML = [img, '<span>', entry.name, '</span>'].join('');
-					fragment.appendChild(li);
-				}
-				filelist.appendChild(fragment);
-			}, self.fn.errorHandler);*/
-
 		},
 		LEImp:function(){
-			
+			var html='<p>Insérez ci-dessous vos données : </p><div><textarea id="LEImp_str"></textarea></div>';
+
+			self.ui.dialog.open(html, {
+				"Import from string":{
+					"function":function(){
+						self.func.LEImpProcess(document.getElementById("LEImp_str").value);
+					}
+				},
+				"Import form file":{
+					"function":function(){
+						alert("not yet implemented");
+					}
+				},
+				"Import from LocalStore":{
+					"function":function(){
+						alert("not yet implemented");
+						/*var dirReader = self.fileSystem.root.createReader();
+						dirReader.readEntries(function(entries){
+							if (!entries.length) {
+								filelist.innerHTML = 'Filesystem is empty.';
+							} else {
+								filelist.innerHTML = '';
+							}
+
+							var fragment = document.createDocumentFragment();
+							for (var i = 0, entry; entry = entries[i]; ++i) {
+								var img = entry.isDirectory ? '<img src="http://www.html5rocks.com/static/images/tutorials/icon-folder.gif">' :
+								'<img src="http://www.html5rocks.com/static/images/tutorials/icon-file.gif">';
+								var li = document.createElement('li');
+								li.innerHTML = [img, '<span>', entry.name, '</span>'].join('');
+								fragment.appendChild(li);
+							}
+							filelist.appendChild(fragment);
+						}, self.fn.errorHandler);*/
+					}
+				}
+			});
+		},
+		/**
+		* @data  (string)
+		*/
+		LEImpProcess:function(data){
+			var elm, typeId, tmpId;
+
+			if(data && typeof data == 'string'){
+				data=JSON.parse(data);
+			}
+
+			if(data && typeof data == "object"){
+				document.getElementById("tl_name").value=data.scene;
+				//TODO : manage type
+				document.getElementById("tl_h").value=data.height;
+				document.getElementById("tl_w").value=data.width;
+				//TODO : manage bg
+				//TODO : manage fg
+				view.innerHTML="";
+				if(data.objects){
+					for(var x in data.objects){
+						if(data.objects.hasOwnProperty(x)){
+							elm=document.createElement("div");
+							typeId=self.obj.getTypeId(data.objects[x].type);
+							view.appendChild(elm);
+							elm.setAttribute("id", data.objects[x].id);
+							elm.setAttribute("draggable", "true");
+							elm.setAttribute("olid", typeId);
+							elm.setAttribute("class", "t_obj_ui");
+							elm.setAttribute("style", obj_list[typeId].style);
+							elm.style.height=data.objects[x].h+'px';
+							elm.style.width=data.objects[x].w+'px';
+							elm.style.left=data.objects[x].x+'px';
+							elm.style.top=data.objects[x].y+'px';
+							elm.addEventListener("dragstart", self.obj.drag);
+							elm.addEventListener("click", self.obj.getProperties);
+
+							tmpId=parseInt(data.objects[x].id.replace("olid"+typeId, ""), 10)+1;
+							if(tmpId>obj_id){
+								obj_id=tmpId;
+							}
+							tmpId=typeId=elm=null;
+						}
+					}
+				}
+			}else{
+				alert("data empty");
+			}
 		}
 	};
 
