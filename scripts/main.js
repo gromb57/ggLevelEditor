@@ -8,7 +8,7 @@ function GgLEMain(){
 			style:"background:lime;border:1px solid green;height:50px;width:50px;"
 		},
 		1:{
-			type:"ennemies",
+			type:"enemy",
 			img:"",
 			desc:"",
 			style:"background:#ffaaaa;border:1px solid red;height:50px;width:50px;"
@@ -26,7 +26,7 @@ function GgLEMain(){
 			style:"background:grey;border:1px solid black;height:50px;width:50px;"
 		},
 		4:{
-			type:"sprites",
+			type:"sprite",
 			img:"",
 			desc:"",
 			style:"background:lightgrey;border:1px solid grey;height:50px;width:50px;"
@@ -38,10 +38,16 @@ function GgLEMain(){
 			style:"background:white;border:1px solid yellow;height:50px;width:50px;"
 		},
 		6:{
-			type:"particules",
+			type:"particule",
 			img:"",
 			desc:"",
 			style:"background:purple;border:1px solid orange;height:50px;width:50px;"
+		},
+		7:{
+			type:"liquid",
+			img:"",
+			desc:"",
+			style:"background:blue;border:1px solid lightblue;height:50px;width:50px;"
 		}
 	},
 	view=document.getElementById("view"),
