@@ -50,6 +50,10 @@ function GgLEMain(){
 			style:"background:blue;border:1px solid lightblue;height:50px;width:50px;"
 		}
 	},
+	gameType={
+		"platform":"",
+		"top view":""
+	},
 	view=document.getElementById("view"),
 	obj_id=0;
 	/*Properties*/
@@ -93,6 +97,8 @@ function GgLEMain(){
 		//objects properties events
 		document.getElementById("top_x").addEventListener("change", self.objProp.changeX);
 		document.getElementById("top_y").addEventListener("change", self.objProp.changeY);
+		document.getElementById("top_w").addEventListener("change", self.objProp.changeW);
+		document.getElementById("top_h").addEventListener("change", self.objProp.changeH);
 		document.getElementById("top_dup_btn").addEventListener("click", self.objProp.duplicate);
 		document.getElementById("top_rm_btn").addEventListener("click", self.objProp.remove);
 		//function events
@@ -102,6 +108,21 @@ function GgLEMain(){
 		h1=document.getElementsByTagName("h1");
 		for(var i=0;i<h1.length;i++){
 			h1[i].addEventListener("click", self.fn.toggleNext);
+		}
+	};
+
+	this.tools={
+		init:function(){
+			var html="";
+
+			for(var x in gameType){
+				if(gameType.hasOwnProperty(x)){
+					html+='<option value="'+x+'">'+x+'</option>';
+				}
+			}
+
+			document.getElementById("tl_type").innerHTML=html;
+			html=null;
 		}
 	};
 
@@ -191,6 +212,8 @@ function GgLEMain(){
 			document.getElementById("top_type").innerText=obj_list[e.currentTarget.getAttribute("olid")].type;
 			document.getElementById("top_x").value=e.currentTarget.offsetLeft;
 			document.getElementById("top_y").value=e.currentTarget.offsetTop;
+			document.getElementById("top_w").value=parseInt(e.currentTarget.style.width, 10);
+			document.getElementById("top_h").value=parseInt(e.currentTarget.style.height, 10);
 		},
 		getTypeId:function(typeStr){
 			for(var x in obj_list){
@@ -235,6 +258,12 @@ function GgLEMain(){
 		changeY:function(){
 			self.objProp.vars.sel.style.top=document.getElementById("top_y").value+'px';
 		},
+		changeW:function(){
+			self.objProp.vars.sel.style.width=document.getElementById("top_w").value+'px';
+		},
+		changeH:function(){
+			self.objProp.vars.sel.style.height=document.getElementById("top_h").value+'px';
+		},
 		duplicate:function(){
 			var newElm=self.objProp.vars.sel.cloneNode();
 			view.appendChild(newElm);
@@ -254,36 +283,38 @@ function GgLEMain(){
 
 	this.fn={
 		errorHandler:function(e){
-		    var msg = '';
+			var msg = '';
 
-		    switch (e.code) {
-		      case FileError.QUOTA_EXCEEDED_ERR:
-		        msg = 'QUOTA_EXCEEDED_ERR';
-		        break;
-		      case FileError.NOT_FOUND_ERR:
-		        msg = 'NOT_FOUND_ERR';
-		        break;
-		      case FileError.SECURITY_ERR:
-		        msg = 'SECURITY_ERR';
-		        break;
-		      case FileError.INVALID_MODIFICATION_ERR:
-		        msg = 'INVALID_MODIFICATION_ERR';
-		        break;
-		      case FileError.INVALID_STATE_ERR:
-		        msg = 'INVALID_STATE_ERR';
-		        break;
-		      default:
-		        msg = 'Unknown Error';
-		        break;
-		    };
+			switch (e.code) {
+				case FileError.QUOTA_EXCEEDED_ERR:
+				msg = 'QUOTA_EXCEEDED_ERR';
+				break;
+				case FileError.NOT_FOUND_ERR:
+				msg = 'NOT_FOUND_ERR';
+				break;
+				case FileError.SECURITY_ERR:
+				msg = 'SECURITY_ERR';
+				break;
+				case FileError.INVALID_MODIFICATION_ERR:
+				msg = 'INVALID_MODIFICATION_ERR';
+				break;
+				case FileError.INVALID_STATE_ERR:
+				msg = 'INVALID_STATE_ERR';
+				break;
+				default:
+				msg = 'Unknown Error';
+				break;
+			};
 
-		    console.error('Error: ' + msg);
+			console.error('Error: ' + msg);
 		},
 		initFS:function(){
 			window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-			window.requestFileSystem(window.TEMPORARY, 1024*1024, function(fs) {
-				self.fileSystem=fs;
-			}, self.fn.errorHandler);
+			if(window.requestFileSystem){
+				window.requestFileSystem(window.TEMPORARY, 1024*1024, function(fs) {
+					self.fileSystem=fs;
+				}, self.fn.errorHandler);
+			}
 		},
 		toggleNext:function(e){
 			var ns=e.currentTarget.nextElementSibling;
@@ -371,7 +402,7 @@ function GgLEMain(){
 		LEExp:function(){
 			var scene={
 				name:document.getElementById("tl_name").value,
-				type:"",
+				type:document.getElementById("tl_type").value,
 				height:document.getElementById("tl_h").value,
 				width:document.getElementById("tl_w").value,
 				bg:{},
@@ -482,7 +513,7 @@ function GgLEMain(){
 			}
 
 			if(data && typeof data == "object"){
-				document.getElementById("tl_name").value=data.scene;
+				document.getElementById("tl_name").value=data.name;
 				//TODO : manage type
 				document.getElementById("tl_h").value=data.height;
 				document.getElementById("tl_w").value=data.width;
@@ -523,6 +554,7 @@ function GgLEMain(){
 
 	this.init=function(){
 		self.dimSet();
+		self.tools.init();
 		self.eventsBind();
 		self.fn.initFS();
 	};

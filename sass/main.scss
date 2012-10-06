@@ -10,6 +10,7 @@ body{
 }
 
 button{
+	cursor:pointer;
 	padding:.5em 1em;
 }
 
@@ -79,6 +80,7 @@ table{
 	h1{
 		background:#c1cdc4;
 		color:#202221;
+		cursor:pointer;
 		font-size:1.4em;
 		outline:1px solid #333333;
 		text-align:center;
